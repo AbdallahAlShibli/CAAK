@@ -1,0 +1,20 @@
+.footer {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f9f9f9; /* Light background color */
+  }
+  
+  .footer-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .footer-text {
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+    font-family: Arial, sans-serif;
+  }
+  

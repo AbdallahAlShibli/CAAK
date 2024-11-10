@@ -1,0 +1,39 @@
+.about-us {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .about-us h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .mission {
+    margin: 20px 0;
+  }
+  
+  .team {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .team-member {
+    width: 250px;
+    text-align: center;
+  }
+  
+  .team-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  .team-member h3 {
+    font-size: 1.2rem;
+    margin: 10px 0 5px;
+  }
+  

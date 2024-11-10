@@ -1,0 +1,20 @@
+<div class="about-us">
+    <h1>About Us</h1>
+    <p>Welcome to [Your Company]! We are dedicated to providing the best services for our clients.</p>
+  
+    <section class="mission">
+      <h2>Our Mission</h2>
+      <p>To deliver high-quality products that bring value and make a positive impact on people’s lives.</p>
+    </section>
+  
+    <section class="team">
+      <h2>Meet the Team</h2>
+      <div class="team-member" *ngFor="let member of teamMembers">
+        <img [src]="member.photo" [alt]="member.name" class="team-photo" />
+        <h3>{{ member.name }}</h3>
+        <p>{{ member.position }}</p>
+        <p>{{ member.bio }}</p>
+      </div>
+    </section>
+  </div>
+  

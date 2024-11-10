@@ -1,0 +1,25 @@
+<div class="register-container">
+    <h2>Register Page</h2>
+    <form>
+      <div class="input-container">
+        <input type="text" placeholder="Username..." required />
+      </div>
+      <div class="input-container">
+        <input (ngModel)="email" type="email" placeholder="Email..." required />
+      </div>
+      <div class="input-container">
+        <input (ngModel)="password" type="password" placeholder="Password..." required />
+      </div>
+      <button (click)="onRegister()" type="submit" class="register-button">Register</button>
+      <div *ngIf="otpSent">
+        <h3>Enter OTP sent to your email</h3>
+        <input (ngModel)="otp" placeholder="OTP" type="text" />
+        <button (click)="verifyOtp()">Verify OTP</button>
+      </div>
+
+      <p *ngIf="message">{{ message }}</p>
+      <p class="login-link">
+        You have an account? <a (click)="navigateTo('login')" class="login">LogIn</a>
+      </p>
+    </form>
+  </div>  

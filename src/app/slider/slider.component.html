@@ -1,0 +1,13 @@
+<div class="slider">
+    <img src="assets/nextleft.png" class="nav-button left" (click)="prevSlide()"/>
+  
+    <div class="slide-content">
+      <img [src]="slides[currentSlide].image" alt="Slide Image" class="foreground-image" />
+      <div class="description">
+        <p>{{ slides[currentSlide].text }}</p>
+        <button class="start-button">START</button>
+      </div>
+    </div>
+  
+    <img src="assets/next.png" class="nav-button right" (click)="nextSlide()"/>
+  </div>  
