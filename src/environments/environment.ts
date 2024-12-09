@@ -2,11 +2,12 @@
 export const environment = {
     production: false,
     firebaseConfig: {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyB4Y-SVVxbi089Vc7Aj6k4QkUV-rx6qMMI",
+      authDomain: "caak-a90ba.firebaseapp.com",
+      projectId: "caak-a90ba",
+      storageBucket: "caak-a90ba.firebasestorage.app",
+      messagingSenderId: "958060334504",
+      appId: "1:958060334504:web:b9cf1a0f4f060b95c2e19d",
+      measurementId: "G-EYFVHHLB6E"
     }
   };  

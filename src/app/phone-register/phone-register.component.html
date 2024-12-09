@@ -1,0 +1,33 @@
+<div class="phone-register-container">
+    <h2>Register with Phone Number</h2>
+  
+    <form [formGroup]="phoneRegisterForm" *ngIf="!verificationStep" (ngSubmit)="sendVerificationCode()">
+      <label for="phone">Phone Number:</label>
+      <input
+        id="phone"
+        type="text"
+        formControlName="phoneNumber"
+        placeholder="Phone Number (e.g., +968XXXXXXXX)"
+      />
+      <div *ngIf="phoneRegisterForm.get('phoneNumber')?.invalid && phoneRegisterForm.get('phoneNumber')?.touched" class="error-message">
+        <small *ngIf="phoneRegisterForm.get('phoneNumber')?.errors?.['required']">Phone number is required.</small>
+        <small *ngIf="phoneRegisterForm.get('phoneNumber')?.errors?.['pattern']">Invalid phone number format.</small>
+      </div>
+  
+      <div id="recaptcha-container"></div>
+      <button type="submit" [disabled]="phoneRegisterForm.invalid">Send Verification Code</button>
+    </form>
+  
+    <div *ngIf="verificationStep">
+      <p>Enter the verification code sent to your phone:</p>
+      <input
+        type="text"
+        [(ngModel)]="verificationCode"
+        placeholder="Verification Code"
+      />
+      <button (click)="verifyCode()">Verify Code</button>
+    </div>
+  
+    <p *ngIf="message">{{ message }}</p>
+  </div>
+  

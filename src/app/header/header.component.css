@@ -39,4 +39,25 @@
   
   .nav-links a:hover {
     color: #007bff; /* Change color on hover */
-  }  
+  } 
+  
+  /* Distinct Logout Button Styles */
+.logout-button {
+  background-color: #dc3545; /* Red background */
+  color: #ffffff; /* White text */
+  border: none;
+  border-radius: 20px; /* Rounded button shape */
+  padding: 8px 15px; /* Spacing inside the button */
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #c82333; /* Slightly darker red on hover */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+.logout-button:active {
+  transform: scale(0.95); /* Slight shrink effect on click */
+}

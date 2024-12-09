@@ -1,63 +1,62 @@
 .register-container {
-    width: 300px;
-    margin: 100px auto;
-    padding: 120px;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-  }
-  
-  h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .input-container {
-    margin-bottom: 15px;
-  }
-  
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border-radius: 20px;
-    border: 1px solid #ddd;
-    font-size: 14px;
-    outline: none;
-    box-sizing: border-box;
-  }
-  
-  .register-button {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #28a745;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    outline: none;
-  }
-  
-  .register-button:hover {
-    background-color: #218838;
-  }
-  
-  .login-link {
-    margin-top: 20px;
-    font-size: 12px;
-    color: #666;
-  }
-  
-  .login {
-    color: red;
-    text-decoration: none;
-  }
-  
-  .login:hover {
-    text-decoration: underline;
-  }  
+  width: 300px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.register-container h2 {
+  text-align: center;
+}
+
+.toggle-options {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.toggle-options button {
+  width: 48%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.toggle-options button:hover {
+  background: #0056b3;
+}
+
+.input-container {
+  margin-bottom: 15px;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.register-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background: #28a745;
+  color: white;
+  cursor: pointer;
+}
+
+.register-button:hover {
+  background: #218838;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 15px;
+}

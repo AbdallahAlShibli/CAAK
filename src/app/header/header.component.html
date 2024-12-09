@@ -1,13 +1,22 @@
 <nav class="navbar">
-    <!-- Logo -->
-    <div class="logo">
-      <img src="assets/logo.png" alt="Logo" />
-    </div>
-    <!-- Navigation Links -->
-    <ul class="nav-links">
-      <li><a href="#" (click)="navigateTo('home')">Home</a></li>
-      <li><a (click)="navigateTo('about-us')">About Us</a></li>
-      <li><a href="#">Contact</a></li>
-      <li><a (click)="navigateTo('login')">Login</a></li>
-    </ul>
-  </nav>  
+  <!-- Logo -->
+  <div class="logo">
+    <img src="assets/logo.png" alt="Logo" />
+  </div>
+
+  <!-- Navigation Links -->
+  <ul class="nav-links">
+    <li><a href="#" (click)="navigateTo('home')">Home</a></li>
+    <li><a (click)="navigateTo('about-us')">About Us</a></li>
+    <li><a (click)="navigateTo('contact-us')">Contact Us</a></li>
+
+    <!-- <li><a (click)="navigateTo('phone-register')">Phone Register</a></li> -->
+
+    <!-- Show Login or Logout based on user state -->
+    <li *ngIf="!isLoggedIn"><a (click)="navigateTo('login')">Login</a></li>
+    <li *ngIf="isLoggedIn">
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </li>
+    <li *ngIf="isLoggedIn"><a (click)="navigateTo('parents-dashboard')">Parents Dashboard</a></li>
+  </ul>
+</nav>

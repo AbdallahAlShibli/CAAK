@@ -1,16 +1,63 @@
 <div class="login-container">
-    <h2>Login Page</h2>
-    <form>
-      <div class="input-container">
-        <input type="email" placeholder="Email..." required />
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+    <div id="recaptcha-container"></div>
+    <!-- Email and Password Login -->
+    <div *ngIf="!usePhone">
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        placeholder="Enter a valid email (e.g., example@mail.com)"
+        required
+      />
+      <div class="error-message" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+        <small *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</small>
+        <small *ngIf="loginForm.get('email')?.errors?.['pattern']">Invalid email format.</small>
       </div>
-      <div class="input-container">
-        <input type="password" placeholder="Password..." required />
+
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        placeholder="Password (8+ chars, 1 uppercase, 1 number)"
+        required
+      />
+      <div class="error-message" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        <small *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</small>
+        <small *ngIf="loginForm.get('password')?.errors?.['pattern']">Password must be at least 8 characters, include one uppercase letter and one number.</small>
       </div>
-      <a href="#" class="forgot-password">Forget Password?</a>
-      <button type="submit" class="login-button">LogIn</button>
-      <p class="register-link">
-        You don't have an account? <a (click)="navigateTo('register')" class="register">Register</a>
-      </p>
-    </form>
-  </div>  
+    </div>
+
+    <!-- Phone Login -->
+    <div *ngIf="usePhone">
+      <label for="phone">Phone:</label>
+      <input
+        type="text"
+        id="phone"
+        formControlName="phoneNumber"
+        placeholder="Phone Number (e.g., +968XXXXXXXX)"
+        required
+      />
+      <div class="error-message" *ngIf="loginForm.get('phoneNumber')?.invalid && loginForm.get('phoneNumber')?.touched">
+        <small *ngIf="loginForm.get('phoneNumber')?.errors?.['required']">Phone number is required.</small>
+        <small *ngIf="loginForm.get('phoneNumber')?.errors?.['pattern']">Invalid phone number format. Use +968XXXXXXXX.</small>
+      </div>
+      <div id="recaptcha-container"></div>
+    </div>
+
+    <button type="button" class="toggle-button" (click)="toggleLoginMethod()">Switch to {{ usePhone ? 'Email' : 'Phone' }} Login</button>
+    <button type="submit">Login</button>
+    <p class="login-link">
+      You don't have an account? <a class="login" routerLink="/register">Register</a>
+    </p>
+  </form>
+
+  <div class="error-message" *ngIf="message">
+    <small>{{ message }}</small>
+  </div>
+
+  <button (click)="forgotPassword()">Forgot Password?</button>
+</div>

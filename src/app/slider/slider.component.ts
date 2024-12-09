@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-slider',
+  standalone: false,
   templateUrl: './slider.component.html',
   styleUrls: ['./slider.component.css']
 })
@@ -9,7 +10,7 @@ export class SliderComponent {
   slides = [
     {
       image: 'assets/rev_slider1_3.png', // Path to foreground image 1
-      text: 'Description foettr the first slide.'
+      text: 'Welcome to SafeNet Kids: Cybersecurity Awareness for Children!'
     },
     {
       image: 'assets/rev_slider1_3.png', // Path to foreground image 2

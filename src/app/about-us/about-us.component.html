@@ -1,20 +1,17 @@
-<div class="about-us">
-    <h1>About Us</h1>
-    <p>Welcome to [Your Company]! We are dedicated to providing the best services for our clients.</p>
-  
-    <section class="mission">
+<div class="about-us-container">
+  <h1>About Us</h1>
+  <div class="about-us-content">
+    <div class="card">
       <h2>Our Mission</h2>
-      <p>To deliver high-quality products that bring value and make a positive impact on people’s lives.</p>
-    </section>
-  
-    <section class="team">
-      <h2>Meet the Team</h2>
-      <div class="team-member" *ngFor="let member of teamMembers">
-        <img [src]="member.photo" [alt]="member.name" class="team-photo" />
-        <h3>{{ member.name }}</h3>
-        <p>{{ member.position }}</p>
-        <p>{{ member.bio }}</p>
-      </div>
-    </section>
+      <p>
+        To empower children with knowledge and skills to navigate the online world safely.
+      </p>
+    </div>
+    <div class="card">
+      <h2>Our Approach</h2>
+      <p>
+        Interactive games, engaging videos, and fun activities to make learning enjoyable.
+      </p>
+    </div>
   </div>
-  
+</div>

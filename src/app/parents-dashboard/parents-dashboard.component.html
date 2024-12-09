@@ -1,0 +1,66 @@
+<div class="dashboard-container">
+  <div class="title">
+      <h2>Parents Dashboard</h2>
+      <button (click)="navigateToAddChild()">Add Child</button>
+  </div>
+
+  <!-- Change Language -->
+  <div class="option-container">
+    <h3>1. Change Language</h3>
+    <button (click)="changeLanguage('EN')" [class.active]="language === 'EN'">English</button>
+    <button (click)="changeLanguage('AR')" [class.active]="language === 'AR'">Arabic</button>
+    <p>Current Language: {{ language }}</p>
+  </div>
+
+  <!-- Set Default Level -->
+  <div class="option-container">
+    <h3>2. Set Default Level</h3>
+    <button (click)="setDefaultLevel('easy')" [class.active]="defaultLevel === 'easy'">Easy</button>
+    <button (click)="setDefaultLevel('medium')" [class.active]="defaultLevel === 'medium'">Medium</button>
+    <button (click)="setDefaultLevel('hard')" [class.active]="defaultLevel === 'hard'">Hard</button>
+    <p>Current Level: {{ defaultLevel }}</p>
+  </div>
+
+  <!-- View Child Progress -->
+  <div class="option-container">
+    <h3>3. View Progress of Each Child</h3>
+    <div *ngFor="let child of childrenList">
+      <h4>{{ child.name }}</h4>
+      <p *ngIf="!child.isEditing">Age: {{ child.age }}</p>
+      <p *ngIf="!child.isEditing">Gender: {{ child.gender }}</p>
+      <p *ngIf="!child.isEditing">Progress: {{ child.progress || 'No progress available' }}</p>
+
+      <!-- Editable Fields -->
+      <div *ngIf="child.isEditing">
+          <label>
+              Name:
+              <input [(ngModel)]="child.name" />
+          </label>
+          <label>
+              Age:
+              <input [(ngModel)]="child.age" type="number" />
+          </label>
+          <label>
+              Gender:
+              <input [(ngModel)]="child.gender" />
+          </label>
+      </div>
+
+      <button *ngIf="child.isEditing" (click)="saveChildData(child)">Save</button>
+      <button *ngIf="child.isEditing" (click)="cancelEditingChild(child)">Cancel</button>
+      <button *ngIf="!child.isEditing" (click)="startEditingChild(child)">Edit</button>
+  </div>
+  </div>
+
+  <!-- Edit and Delete Child -->
+  <div class="option-container">
+    <h3>4. Manage Children's Data</h3>
+    <div *ngFor="let child of childrenList">
+      <h4>{{ child.name }}</h4>
+      <button (click)="startEditingChild(child)">Edit</button>
+      <button (click)="deleteChild(child.id)">Delete</button>
+    </div>
+  </div>
+
+  <p *ngIf="message">{{ message }}</p>
+</div>

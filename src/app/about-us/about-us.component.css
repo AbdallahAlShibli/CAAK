@@ -1,39 +1,35 @@
-.about-us {
-    padding: 20px;
-    text-align: center;
+.about-us-container {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f7f7f9; /* Match light background */
+  margin-bottom: 4%;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.about-us-content {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+
+  .card {
+    background-color: #e9ecef; /* Light purple/gray card color */
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    max-width: 300px;
+    text-align: left;
+
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #333;
+    }
   }
-  
-  .about-us h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-  }
-  
-  .mission {
-    margin: 20px 0;
-  }
-  
-  .team {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  .team-member {
-    width: 250px;
-    text-align: center;
-  }
-  
-  .team-photo {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-  }
-  
-  .team-member h3 {
-    font-size: 1.2rem;
-    margin: 10px 0 5px;
-  }
-  
+}
