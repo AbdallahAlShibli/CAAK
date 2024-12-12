@@ -1,22 +1,27 @@
 .card-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+    display: grid; /* Grid layout for consistent rows */
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+    margin: 20px; /* Space below the card list */
   }
   
   .card {
-    width: 200px;
-    height: 300px;
-    perspective: 1000px;
+    padding: 30px;
+    width: 60%; /* Cards fill their grid cell */
+    height: 70%;
+    aspect-ratio: 3 / 4; /* Maintain consistent ratio (width:height) */
+    perspective: 1500px; /* For 3D flip effect */
     cursor: pointer;
-  }
+    gap: 5px;
+    font-size: 14px; /* Adjust font size for readability */
+    margin-bottom: 20%; 
+}
   
   .card-inner {
-    width: 100%;
-    height: 100%;
+    width: 100%; /* Match the card's full width */
+    height: 100%; /* Match height based on the aspect ratio */
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 0.6s;
+    transition: transform 0.6s ease-in-out; /* Smooth flip transition */
   }
   
   .card.flipped .card-inner {
@@ -25,17 +30,21 @@
   
   .card-front,
   .card-back {
-    width: 100%;
-    height: 100%;
     position: absolute;
     backface-visibility: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; /* Center-align content vertically */
     align-items: center;
+    padding: 30px; /* Balanced padding for text content */
     border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    word-wrap: break-word; /* Prevent text from overflowing */
+    overflow: hidden; /* Hide overflow if content is too long */
   }
   
   .card-front {
@@ -43,6 +52,40 @@
   }
   
   .card-back {
-    background: #f0f0f0;
+    background: #f9f9f9; /* Slightly different background for back */
     transform: rotateY(180deg);
+  }
+  
+  .card h3 {
+    font-size: 18px; /* Increase title size for emphasis */
+    margin-bottom: 10px; /* Add spacing below the title */
+    text-align: center;
+  }
+  
+  .card ol {
+    font-size: 14px; /* Adjust body font size for readability */
+    line-height: 1.5; /* Improve text readability with spacing */
+    text-align: justify; /* Align text for a clean look */
+  }
+  
+  .card p,
+  .card ol{
+    font-size: 12px;
+    padding-left: 2px; /* Add spacing for ordered list items */
+  }
+
+  @media (max-width: 1024px) {
+    .card-list {
+      grid-template-columns: repeat(2, 1fr); /* Show 2 cards per row on medium screens */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .card-list {
+      grid-template-columns: 1fr; /* Show 1 card per row on small screens */
+    }
+  
+    .card {
+      font-size: 12px; /* Reduce font size for smaller screens */
+    }
   }
