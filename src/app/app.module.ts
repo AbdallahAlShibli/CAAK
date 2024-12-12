@@ -19,6 +19,8 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
 import { PhoneRegisterComponent } from './phone-register/phone-register.component';
 import { AddNewChildComponent } from './add-new-child/add-new-child.component';
 import { ParentsDashboardComponent } from './parents-dashboard/parents-dashboard.component';
+import { GameComponent } from './game/game.component';
+import { CardListComponent } from './card-list/card-list.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,6 +36,8 @@ import { ParentsDashboardComponent } from './parents-dashboard/parents-dashboard
     PhoneRegisterComponent,
     AddNewChildComponent,
     ParentsDashboardComponent,
+    GameComponent,
+    CardListComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

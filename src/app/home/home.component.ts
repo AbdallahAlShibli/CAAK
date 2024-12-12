@@ -17,7 +17,7 @@ getUserId() {
 
 getStarted() {
   // Navigate to another page, e.g., "/signup"
-  this.router.navigate(['/']);
+  this.router.navigate(['/game']);
 }
 
 }

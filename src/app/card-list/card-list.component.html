@@ -1,0 +1,23 @@
+<div class="card-list">
+    <div
+      class="card"
+      *ngFor="let item of items; let i = index"
+      [class.flipped]="flipped[i]"
+      (click)="toggleFlip(i)"
+    >
+      <div class="card-inner">
+        <!-- Front Side -->
+        <div class="card-front">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+        <!-- Back Side -->
+        <div class="card-back">
+          <h4>Tips:</h4>
+          <ol>
+            <li *ngFor="let tip of item.tips">{{ tip }}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>

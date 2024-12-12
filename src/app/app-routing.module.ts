@@ -9,9 +9,11 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
 import { PhoneRegisterComponent } from './phone-register/phone-register.component';
 import { AddNewChildComponent } from './add-new-child/add-new-child.component';
 import { ParentsDashboardComponent } from './parents-dashboard/parents-dashboard.component';
+import { GameComponent } from './game/game.component';
 
 const routes: Routes = [
   { path: 'parents-dashboard', component: ParentsDashboardComponent },
+  { path: 'game', component: GameComponent },
   { path: 'add-new-child', component: AddNewChildComponent },
   { path: 'login', component: LoginComponent },
   { path: 'phone-register', component: PhoneRegisterComponent },
