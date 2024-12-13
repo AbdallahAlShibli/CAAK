@@ -5,9 +5,12 @@
     max-width: 800px;
     margin: 40px auto;
     padding: 20px;
-    background: #f9f9f9;
+    background: linear-gradient(rgba(240, 240, 240, 0.85), rgba(255, 255, 255, 0.85)),
+                url('/assets/card_bg.png') no-repeat center center;
+    background-size: cover;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #fff;
   }
   
   /* Central Timeline Shape */
@@ -19,8 +22,14 @@
     left: 50%;
     transform: translateX(-50%);
     width: 4px;
-    background: #ddd; /* Default timeline color */
+    background: rgba(255, 255, 255, 0.6); /* Semi-transparent white */
     z-index: 0;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  /* Highlight Completed Timeline */
+  .timeline .timeline-item.completed ~ .timeline::before {
+    background: rgba(40, 167, 69, 0.6); /* Semi-transparent green */
   }
   
   /* Timeline Item */
@@ -31,7 +40,7 @@
     margin: 50px 0;
     position: relative;
     width: 100%;
-    z-index: 1; /* Ensure items are above the central line */
+    z-index: 1;
   }
   
   /* Title Container */
@@ -39,9 +48,14 @@
     position: relative;
     width: calc(100% - 70px);
     padding: 15px;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.8); /* Transparent white */
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+  
+  .title-container:hover {
+    transform: scale(1.02); /* Slight hover effect */
   }
   
   .title-container h3 {
@@ -82,18 +96,18 @@
     flex-direction: column;
     align-items: center;
     width: 50px;
-    z-index: 1; /* Ensure lines and markers are above the central timeline */
+    z-index: 1;
   }
   
   .line {
     width: 4px;
     flex-grow: 1;
-    background: #ddd; /* Default line color */
+    background: rgba(255, 255, 255, 0.6);
     transition: background 0.3s ease-in-out;
   }
   
   .line.success {
-    background: #28a745; /* Green for completed segments */
+    background: rgba(40, 167, 69, 0.8);
   }
   
   .marker {
@@ -104,7 +118,7 @@
     border: 4px solid #007bff;
     border-radius: 50%;
     cursor: pointer;
-    z-index: 2; /* Markers are above the central timeline */
+    z-index: 2;
     transition: transform 0.3s, border-color 0.3s;
   }
   
