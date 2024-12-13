@@ -1,0 +1,25 @@
+<div class="page-container">
+    <!-- Page Title -->
+    <h1 class="page-title">{{ title }}</h1>
+  
+    <!-- Grid of Video Cards -->
+    <div class="cards-grid">
+      <div class="card" *ngFor="let video of videos">
+        <img 
+          [src]="'https://img.youtube.com/vi/' + video.id + '/0.jpg'" 
+          alt="{{ video.title }}" 
+          class="thumbnail"
+        />
+        <h3 class="card-title">{{ video.title }}</h3>
+        <button class="play-button" (click)="playVideo(video.id)">Play</button>
+      </div>
+    </div>
+  
+    <!-- Video Player Overlay -->
+    <div class="video-player-overlay" *ngIf="selectedVideoId">
+      <div class="video-player">
+        <div id="youtube-player"></div> <!-- YouTube player container -->
+        <button class="close-button" (click)="closePlayer()">Close</button>
+      </div>
+    </div>
+  </div>

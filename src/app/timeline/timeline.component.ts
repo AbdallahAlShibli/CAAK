@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-timeline',
@@ -12,6 +13,10 @@ export class TimelineComponent implements OnInit {
   dialogOpen = false; // Controls the dialog visibility
   currentDialogLevel = 0; // Tracks which level's dialog is open
   selectedAnswers: string[] = []; // Stores user's selected answers for both questions
+
+  userId: string = ''; // Stores the current user's ID
+  children: any[] = []; // Stores the list of children from Firestore
+  selectedChildId: string | null = null; // Stores the selected child ID
 
   timeline = [
     {
@@ -107,15 +112,89 @@ export class TimelineComponent implements OnInit {
     }
   ];
 
-  constructor(private afAuth: AngularFireAuth) {}
+  constructor(private afAuth: AngularFireAuth, private firestore: AngularFirestore, private renderer: Renderer2) { }
 
   ngOnInit(): void {
+    this.loadYouTubeBackgroundSound();
+
     // Check authentication state
     this.afAuth.authState.subscribe(user => {
-      this.isLoggedIn = !!user; // If user exists, set isLoggedIn to true
+      if (user) {
+        this.isLoggedIn = true;
+        this.userId = user.uid; // Store the current user's ID
+        this.loadChildren(); // Load the children for this user
+      }
     });
   }
 
+  // Play YouTube background sound
+  loadYouTubeBackgroundSound(): void {
+    const script = this.renderer.createElement('script');
+    script.src = 'https://www.youtube.com/iframe_api';
+    script.async = true;
+    this.renderer.appendChild(document.body, script);
+
+    (window as any).onYouTubeIframeAPIReady = () => {
+      new (window as any).YT.Player('youtube-background', {
+        height: '0',
+        width: '0',
+        videoId: 'RBYgqYLmQWM', // Replace with your YouTube video ID
+        events: {
+          onReady: (event: any) => {
+            event.target.setVolume(20); // Adjust volume level
+            event.target.playVideo();
+          }
+        },
+        playerVars: {
+          autoplay: 1,
+          loop: 1,
+          playlist: 'RBYgqYLmQWM', // Ensure it loops
+          controls: 0,
+          disablekb: 1,
+          modestbranding: 1,
+          fs: 0,
+          rel: 0,
+          showinfo: 0
+        }
+      });
+    };
+  }
+
+  // Load children from Firestore
+  loadChildren(): void {
+    this.firestore
+      .collection('users')
+      .doc(this.userId)
+      .collection('children')
+      .snapshotChanges()
+      .subscribe(childrenSnapshot => {
+        this.children = childrenSnapshot.map(child => ({
+          id: child.payload.doc.id,
+          ...(child.payload.doc.data() as any)
+        }));
+      });
+  }
+
+  // Save progress to Firestore
+  saveProgress(): void {
+    if (!this.selectedChildId) {
+      alert('Please select a child to save progress.');
+      return;
+    }
+
+    this.firestore
+      .collection('users')
+      .doc(this.userId)
+      .collection('children')
+      .doc(this.selectedChildId)
+      .update({
+        progress: this.currentLevel // Save the current level as progress
+      })
+      .then(() => console.log('Progress saved successfully!'))
+      .catch(err => console.error('Error saving progress:', err));
+  }
+
+  // Open dialog for a specific level
   openDialog(level: number): void {
     if (level <= this.currentLevel) {
       this.currentDialogLevel = level;
@@ -124,10 +203,12 @@ export class TimelineComponent implements OnInit {
     }
   }
 
+  // Close dialog
   closeDialog(): void {
     this.dialogOpen = false;
   }
 
+  // Submit answer and save progress
   submitAnswer(): void {
     const currentQuestions = this.timeline[this.currentDialogLevel].questions;
     const allCorrect = currentQuestions.every((q, index) => this.selectedAnswers[index] === q.correctAnswer);
@@ -135,6 +216,7 @@ export class TimelineComponent implements OnInit {
     if (allCorrect) {
       if (this.currentDialogLevel === this.currentLevel) {
         this.currentLevel++; // Progress to the next level
+        this.saveProgress(); // Save the updated progress to Firestore
       }
       this.closeDialog();
     } else {

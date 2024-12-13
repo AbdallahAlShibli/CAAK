@@ -22,6 +22,7 @@ import { ParentsDashboardComponent } from './parents-dashboard/parents-dashboard
 import { GameComponent } from './game/game.component';
 import { CardListComponent } from './card-list/card-list.component';
 import { TimelineComponent } from './timeline/timeline.component';
+import { YoutubeVideoCardsComponent } from './youtube-video-cards/youtube-video-cards.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +41,7 @@ import { TimelineComponent } from './timeline/timeline.component';
     GameComponent,
     CardListComponent,
     TimelineComponent,
+    YoutubeVideoCardsComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

@@ -20,10 +20,10 @@ export class HomeComponent implements OnInit {
 
   getStarted() {
     // Navigate to another page, e.g., "/signup"
-    // if (this.isLoggedIn) {
+    if (this.isLoggedIn) {
       this.router.navigate(['/game']);
 
-    // }
+    }
   }
 
 }
