@@ -1,0 +1,50 @@
+<div class="timeline">
+    <div 
+      class="timeline-item" 
+      *ngFor="let level of timeline; let i = index" 
+      [class.completed]="i < currentLevel"
+      [class.active]="i === currentLevel"
+    >
+      <!-- Title with Description and Tips -->
+      <div class="title-container">
+        <h3 class="title">{{ level.title }}</h3>
+        <p class="description">{{ level.description }}</p>
+        <ul class="tips">
+          <li *ngFor="let tip of level.tips">{{ tip }}</li>
+        </ul>
+      </div>
+  
+      <!-- Timeline and Marker -->
+      <div class="line-container">
+        <div class="line" [class.success]="i < currentLevel"></div>
+        <div class="marker" (click)="openDialog(i)"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Dialog Box -->
+  <div *ngIf="dialogOpen" class="dialog-overlay">
+    <div class="dialog">
+      <h3>Level {{ currentDialogLevel + 1 }}: {{ timeline[currentDialogLevel].title }}</h3>
+      <div *ngFor="let question of timeline[currentDialogLevel]?.questions; let qIndex = index">
+        <p><strong>{{ question.question }}</strong></p>
+        <div *ngFor="let option of question.options">
+          <input 
+            type="radio" 
+            [name]="'question-' + qIndex" 
+            [value]="option" 
+            [(ngModel)]="selectedAnswers[qIndex]"
+          />
+          {{ option }}
+        </div>
+      </div>
+      <div class="dialog-actions">
+        <button (click)="submitAnswer()">Submit</button>
+        <button (click)="closeDialog()">Close</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="completion-message" *ngIf="currentLevel >= timeline.length">
+    <h3>Congratulations! You have completed the timeline.</h3>
+  </div>

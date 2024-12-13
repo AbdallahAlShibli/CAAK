@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../services/authservice';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-home',
@@ -8,16 +8,22 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
-constructor(private authService: AuthService, private router: Router){};
+export class HomeComponent implements OnInit {
+  isLoggedIn: boolean = false;
+  constructor(private afAuth: AngularFireAuth, private router: Router) { };
+  ngOnInit() {
+    // Check authentication state
+    this.afAuth.authState.subscribe(user => {
+      this.isLoggedIn = !!user; // If user exists, set isLoggedIn to true
+    });
+  }
 
-getUserId() {
-  console.log(this.authService.userId);
-}
+  getStarted() {
+    // Navigate to another page, e.g., "/signup"
+    // if (this.isLoggedIn) {
+      this.router.navigate(['/game']);
 
-getStarted() {
-  // Navigate to another page, e.g., "/signup"
-  this.router.navigate(['/game']);
-}
+    // }
+  }
 
 }
