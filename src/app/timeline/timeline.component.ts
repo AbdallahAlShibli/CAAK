@@ -141,7 +141,7 @@ export class TimelineComponent implements OnInit {
         videoId: 'RBYgqYLmQWM', // Replace with your YouTube video ID
         events: {
           onReady: (event: any) => {
-            event.target.setVolume(20); // Adjust volume level
+            event.target.setVolume(50); // Adjust volume level
             event.target.playVideo();
           }
         },

@@ -5,15 +5,16 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-add-new-child',
-  standalone: false,
   templateUrl: './add-new-child.component.html',
   styleUrls: ['./add-new-child.component.css']
 })
 export class AddNewChildComponent {
   childForm: FormGroup;
-  childIcon: string | ArrayBuffer | null = null;
+  childIcon: string | null = null;
   userId: string | null = null;
   message: string = '';
+  showImagePicker: boolean = false;
+  availableImages: string[] = ['/assets/p1.jpeg', '/assets/p2.jpeg', '/assets/p3.jpeg', '/assets/p4.jpeg', '/assets/p5.jpeg', '/assets/p6.jpeg'];
 
   constructor(
     private fb: FormBuilder,
@@ -24,7 +25,7 @@ export class AddNewChildComponent {
       name: ['', Validators.required],
       age: ['', [Validators.required, Validators.min(1), Validators.max(18)]],
       gender: ['', Validators.required],
-      icon: [''] // For storing the icon URL
+      icon: ['']
     });
 
     this.afAuth.authState.subscribe((user) => {
@@ -34,18 +35,15 @@ export class AddNewChildComponent {
     });
   }
 
-  // Handle file selection for child icon
-  onFileSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          this.childIcon = e.target.result; // Assign only if result is valid
-        }
-      };
-      reader.readAsDataURL(file);
-    }
+  // Show image picker
+  openImagePicker(): void {
+    this.showImagePicker = true;
+  }
+
+  // Handle image selection
+  selectImage(image: string): void {
+    this.childIcon = image; // Set the selected image as the childIcon
+    this.showImagePicker = false; // Close the popup
   }
 
   // Add a new child to Firestore
@@ -57,7 +55,7 @@ export class AddNewChildComponent {
 
     const childData = {
       ...this.childForm.value,
-      icon: this.childIcon // Add the uploaded icon to the data
+      icon: this.childIcon || null
     };
 
     try {
@@ -67,6 +65,7 @@ export class AddNewChildComponent {
           .doc(this.userId)
           .collection('children')
           .add(childData);
+
         this.message = 'Child added successfully!';
         this.childForm.reset();
         this.childIcon = null; // Reset the icon

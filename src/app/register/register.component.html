@@ -34,11 +34,12 @@
         formControlName="password"
         placeholder="Password..."
         required
+        (input)="onPasswordInput()"
       />
-      <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error-message">
+      <div class="error-message" *ngIf="registerForm.get('password')?.touched">
         <small *ngIf="registerForm.get('password')?.errors?.['required']">Password is required.</small>
         <small *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters.</small>
-        <small *ngIf="registerForm.get('password')?.errors?.['pattern']">Password must include at least one letter and one number.</small>
+        <small *ngIf="registerForm.get('password')?.errors?.['weakPassword']">{{ passwordStrengthMessage }}</small>
       </div>
     </div>
     <button type="submit" class="register-button" [disabled]="registerForm.invalid">Register</button>

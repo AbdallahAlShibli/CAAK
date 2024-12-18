@@ -1,5 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -19,6 +19,7 @@ export class RegisterComponent implements AfterViewInit {
   verificationStep: boolean = false;
   confirmationResult: firebase.auth.ConfirmationResult | null = null;
   message: string = '';
+  passwordStrengthMessage: string = '';
 
   constructor(private fb: FormBuilder, private router: Router, private afAuth: AngularFireAuth) {
     this.registerForm = this.fb.group({
@@ -26,13 +27,13 @@ export class RegisterComponent implements AfterViewInit {
       email: ['', [
         Validators.required,
         Validators.email,
-        Validators.pattern(/^\w+([-+.'']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/) // Valid email pattern
+        Validators.pattern(/^\w+([-+.'']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)
       ]],
       password: ['', [
         Validators.required,
-        Validators.minLength(8), // Minimum length 8
-        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/) // At least one uppercase letter, one number
-      ]],
+        Validators.minLength(8),
+        this.passwordStrengthValidator
+      ]]
     });
   }
 
@@ -52,13 +53,39 @@ export class RegisterComponent implements AfterViewInit {
     }
   }
 
+  // Custom validator for strong password
+  passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value || '';
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+
+    const isValid = hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+    return !isValid ? { weakPassword: true } : null;
+  }
+
+    // Password input event to check for strength
+    onPasswordInput() {
+      const passwordControl = this.registerForm.get('password');
+      if (passwordControl?.hasError('weakPassword')) {
+        this.passwordStrengthMessage = 'Password is weak. Include uppercase, lowercase, number, and special character.';
+      } else {
+        this.passwordStrengthMessage = '';
+      }
+    }
+
   // Register with email and password
   async onRegisterWithEmail() {
     const { email, password } = this.registerForm.value;
+    if (this.registerForm.get('password')?.hasError('weakPassword')) {
+      this.message = 'Please enter a strong password before submitting.';
+      return;
+    }
     try {
       const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
       this.message = 'Registration successful!';
-      this.router.navigate(['/add-new-child']);
+      this.router.navigate(['/login']);
       console.log('User registered:', userCredential);
     } catch (error: any) {
       this.message = error.message;
@@ -68,7 +95,6 @@ export class RegisterComponent implements AfterViewInit {
   // Send verification code for phone number registration
   async onRegisterWithPhone() {
     try {
-      // Ensure recaptcha-container is properly initialized
       const appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
         size: 'invisible',
         callback: (response: any) => {
@@ -79,7 +105,6 @@ export class RegisterComponent implements AfterViewInit {
         }
       });
 
-      // Verify if phone number is valid
       if (!this.phoneNumber || !this.phoneNumber.match(/^\+968[0-9]{8}$/)) {
         this.message = 'Please enter a valid Oman phone number (e.g., +96812345678)';
         return;

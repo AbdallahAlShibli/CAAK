@@ -1,46 +1,57 @@
 <div class="add-child-container">
-    <div class="child-icon-container">
-      <label for="child-icon-input" class="child-icon-label">
-        <img *ngIf="childIcon" [src]="childIcon" alt="Child Icon" class="child-icon" />
-        <span *ngIf="!childIcon" class="child-icon-placeholder">+</span>
-        <input
-          id="child-icon-input"
-          type="file"
-          (change)="onFileSelected($event)"
-          hidden
-          accept="image/*"
-        />
-      </label>
-      <p class="icon-instruction">Click on the circle to add child icon from PC</p>
-    </div>
-  
-    <form [formGroup]="childForm" (ngSubmit)="addChild()">
-      <div class="input-container">
-        <input
-          type="text"
-          formControlName="name"
-          placeholder="Child Name ..."
-          class="input-field"
-        />
-      </div>
-      <div class="input-container">
-        <input
-          type="number"
-          formControlName="age"
-          placeholder="Child Age ..."
-          class="input-field"
-          min="1"
-          max="18"
-        />
-      </div>
-      <div class="input-container">
-        <select formControlName="gender" class="input-field">
-          <option value="" disabled selected>Child Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </div>
-      <button type="submit" [disabled]="childForm.invalid" class="submit-button">Add Child</button>
-    </form>
+  <div class="child-icon-container">
+    <label class="child-icon-label" (click)="openImagePicker()">
+      <img *ngIf="childIcon" [src]="childIcon" alt="Child Icon" class="child-icon" />
+      <span *ngIf="!childIcon" class="child-icon-placeholder">+</span>
+    </label>
+    <p class="icon-instruction">Click on the circle to choose a profile image</p>
   </div>
-  
+
+  <!-- Image Picker Popup -->
+  <div *ngIf="showImagePicker" class="image-picker-overlay">
+    <div class="image-picker-popup">
+      <h3>Select a Profile Image</h3>
+      <div class="image-picker-grid">
+        <img
+          *ngFor="let image of availableImages"
+          [src]="image"
+          alt="Profile Image"
+          class="image-option"
+          (click)="selectImage(image)"
+        />
+      </div>
+      <button class="close-button" (click)="showImagePicker = false">Close</button>
+    </div>
+  </div>
+
+  <form [formGroup]="childForm" (ngSubmit)="addChild()">
+    <div class="input-container">
+      <input
+        type="text"
+        formControlName="name"
+        placeholder="Child Name ..."
+        class="input-field"
+      />
+    </div>
+    <div class="input-container">
+      <input
+        type="number"
+        formControlName="age"
+        placeholder="Child Age ..."
+        class="input-field"
+        min="1"
+        max="18"
+      />
+    </div>
+    <div class="input-container">
+      <select formControlName="gender" class="input-field">
+        <option value="" disabled selected>Child Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
+    <button type="submit" [disabled]="childForm.invalid" class="submit-button">Add Child</button>
+  </form>
+
+  <p *ngIf="message" class="message">{{ message }}</p>
+</div>
