@@ -23,6 +23,8 @@ import { GameComponent } from './game/game.component';
 import { CardListComponent } from './card-list/card-list.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { YoutubeVideoCardsComponent } from './youtube-video-cards/youtube-video-cards.component';
+import { LevelComponent } from './level/level.component';
+import { SafeUrlPipe } from './shared/safe-url.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +44,8 @@ import { YoutubeVideoCardsComponent } from './youtube-video-cards/youtube-video-
     CardListComponent,
     TimelineComponent,
     YoutubeVideoCardsComponent,
+    LevelComponent,
+    SafeUrlPipe,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

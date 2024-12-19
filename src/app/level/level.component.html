@@ -1,0 +1,46 @@
+<div class="level-container">
+  <h2>{{ levels[currentLevelIndex].title }}</h2>
+
+  <!-- Current Item -->
+  <div *ngIf="currentItem.type === 'video'">
+    <iframe [src]="currentItem.content | safeUrl" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
+      class="video-card"></iframe>
+  </div>
+
+  <div *ngIf="currentItem.type === 'flipCard'">
+    <div class="card" [class.flipped]="isFlipped" (click)="toggleFlip()">
+      <div class="card-inner">
+        <div class="card-front">
+          <h3>{{ currentItem.content.title }}</h3>
+          <p>{{ currentItem.content.description }}</p>
+        </div>
+        <div class="card-back">
+          <h4>Tips:</h4>
+          <ul>
+            <li *ngFor="let tip of currentItem.content.tips">{{ tip }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="currentItem.type === 'flashCard'" class="flash-card-container">
+    <h3>{{ currentItem.content.title }}</h3>
+    <p>{{ currentItem.content.description }}</p>
+    <div *ngFor="let question of currentItem.content.questions; let qIndex = index">
+      <p><strong>{{ question.question }}</strong></p>
+      <div *ngFor="let option of question.options">
+        <input type="radio" [name]="'question-' + qIndex" [value]="option" [(ngModel)]="selectedAnswers[qIndex]" />
+        {{ option }}
+      </div>
+    </div>
+    <button (click)="submitFlashCardAnswers()">Submit Answers</button>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="button-container">
+    <button *ngIf="!isLastItem" class="next-button" (click)="nextItem()">Next Item</button>
+    <button *ngIf="isLastItem && !isLastLevel" class="next-button" (click)="nextLevel()">Next Level</button>
+    <p *ngIf="isLastItem && isLastLevel">Congratulations! You have completed all levels.</p>
+  </div>
+</div>

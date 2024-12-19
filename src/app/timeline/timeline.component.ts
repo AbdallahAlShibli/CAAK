@@ -8,15 +8,15 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
   styleUrls: ['./timeline.component.css']
 })
 export class TimelineComponent implements OnInit {
-  isLoggedIn: boolean = false; // Tracks if the user is logged in
-  currentLevel = 0; // Tracks the current active level
-  dialogOpen = false; // Controls the dialog visibility
-  currentDialogLevel = 0; // Tracks which level's dialog is open
-  selectedAnswers: string[] = []; // Stores user's selected answers for both questions
-
-  userId: string = ''; // Stores the current user's ID
-  children: any[] = []; // Stores the list of children from Firestore
-  selectedChildId: string | null = null; // Stores the selected child ID
+  isLoggedIn: boolean = false;
+  currentLevel = 0;
+  dialogOpen = false;
+  currentDialogLevel = 0;
+  selectedAnswers: string[] = [];
+  userId: string = '';
+  children: any[] = [];
+  selectedChildId: string | null = null;
+  selectedChildName: string | null = null;
 
   timeline = [
     {
@@ -112,22 +112,55 @@ export class TimelineComponent implements OnInit {
     }
   ];
 
-  constructor(private afAuth: AngularFireAuth, private firestore: AngularFirestore, private renderer: Renderer2) { }
+  flashCardsData = [
+    {
+      title: "How to Make a Strong Password!",
+      description: "Your password is like a secret key to your online stuff.",
+      tips: [
+        "Use at least 8 characters.",
+        "Mix big and small letters, numbers, and symbols.",
+        "Keep it secret!"
+      ],
+      questions: [
+        {
+          question: "Is '12345' a good password?",
+          options: ["Yes", "No"],
+          correctAnswer: "No"
+        }
+      ]
+    },
+    {
+      title: "Watch Out for Phishing!",
+      description: "Phishing is when someone tricks you into sharing secrets.",
+      tips: [
+        "Check who sent the message.",
+        "Avoid clicking on strange links.",
+        "Ask an adult if unsure."
+      ],
+      questions: [
+        {
+          question: "What should you do if someone says you've won a prize?",
+          options: ["Click the link", "Tell an adult"],
+          correctAnswer: "Tell an adult"
+        }
+      ]
+    }
+  ];
+  
+  constructor(private afAuth: AngularFireAuth, private firestore: AngularFirestore, private renderer: Renderer2) {}
 
   ngOnInit(): void {
     this.loadYouTubeBackgroundSound();
 
-    // Check authentication state
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.isLoggedIn = true;
-        this.userId = user.uid; // Store the current user's ID
-        this.loadChildren(); // Load the children for this user
+        this.userId = user.uid;
+        this.loadChildren();
       }
     });
   }
 
-  // Play YouTube background sound
   loadYouTubeBackgroundSound(): void {
     const script = this.renderer.createElement('script');
     script.src = 'https://www.youtube.com/iframe_api';
@@ -138,29 +171,12 @@ export class TimelineComponent implements OnInit {
       new (window as any).YT.Player('youtube-background', {
         height: '0',
         width: '0',
-        videoId: 'RBYgqYLmQWM', // Replace with your YouTube video ID
-        events: {
-          onReady: (event: any) => {
-            event.target.setVolume(50); // Adjust volume level
-            event.target.playVideo();
-          }
-        },
-        playerVars: {
-          autoplay: 1,
-          loop: 1,
-          playlist: 'RBYgqYLmQWM', // Ensure it loops
-          controls: 0,
-          disablekb: 1,
-          modestbranding: 1,
-          fs: 0,
-          rel: 0,
-          showinfo: 0
-        }
+        videoId: 'RBYgqYLmQWM',
+        playerVars: { autoplay: 1, loop: 1, playlist: 'RBYgqYLmQWM', controls: 0 }
       });
     };
   }
 
-  // Load children from Firestore
   loadChildren(): void {
     this.firestore
       .collection('users')
@@ -175,7 +191,13 @@ export class TimelineComponent implements OnInit {
       });
   }
 
-  // Save progress to Firestore
+  onChildSelected(): void {
+    const selectedChild = this.children.find(child => child.id === this.selectedChildId);
+    if (selectedChild) {
+      this.selectedChildName = selectedChild.name;
+    }
+  }
+
   saveProgress(): void {
     if (!this.selectedChildId) {
       alert('Please select a child to save progress.');
@@ -187,36 +209,30 @@ export class TimelineComponent implements OnInit {
       .doc(this.userId)
       .collection('children')
       .doc(this.selectedChildId)
-      .update({
-        progress: this.currentLevel // Save the current level as progress
-      })
-      .then(() => console.log('Progress saved successfully!'))
+      .update({ progress: this.currentLevel })
       .catch(err => console.error('Error saving progress:', err));
   }
 
-  // Open dialog for a specific level
   openDialog(level: number): void {
     if (level <= this.currentLevel) {
       this.currentDialogLevel = level;
       this.dialogOpen = true;
-      this.selectedAnswers = Array(this.timeline[level].questions.length).fill(''); // Reset selected answers
+      this.selectedAnswers = Array(this.timeline[level].questions.length).fill('');
     }
   }
 
-  // Close dialog
   closeDialog(): void {
     this.dialogOpen = false;
   }
 
-  // Submit answer and save progress
   submitAnswer(): void {
     const currentQuestions = this.timeline[this.currentDialogLevel].questions;
     const allCorrect = currentQuestions.every((q, index) => this.selectedAnswers[index] === q.correctAnswer);
 
     if (allCorrect) {
       if (this.currentDialogLevel === this.currentLevel) {
-        this.currentLevel++; // Progress to the next level
-        this.saveProgress(); // Save the updated progress to Firestore
+        this.currentLevel++;
+        this.saveProgress();
       }
       this.closeDialog();
     } else {

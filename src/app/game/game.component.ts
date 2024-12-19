@@ -7,9 +7,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./game.component.css'],
 })
 export class GameComponent {
+  currentComponentIndex = 0; // Tracks the currently displayed component
 
+  // Components to show sequentially
+  components = [
+    { name: 'Card List', tag: 'app-card-list' },
+    { name: 'Timeline', tag: 'app-timeline' },
+    { name: 'YouTube Video Cards', tag: 'app-youtube-video-cards' }
+  ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
 
   cardItems = [
@@ -64,4 +71,17 @@ export class GameComponent {
       ]
     }
   ];
+  // Move to the next component
+  nextComponent(): void {
+    if (this.currentComponentIndex < this.components.length - 1) {
+      this.currentComponentIndex++;
+    }
+  }
+
+  // Move to the previous component
+  previousComponent(): void {
+    if (this.currentComponentIndex > 0) {
+      this.currentComponentIndex--;
+    }
+  }
 }

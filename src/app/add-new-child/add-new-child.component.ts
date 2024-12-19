@@ -46,26 +46,43 @@ export class AddNewChildComponent {
     this.showImagePicker = false; // Close the popup
   }
 
-  // Add a new child to Firestore
   async addChild(): Promise<void> {
     if (this.childForm.invalid) {
       this.message = 'Please fill in all fields correctly.';
       return;
     }
-
-    const childData = {
-      ...this.childForm.value,
-      icon: this.childIcon || null
-    };
-
+  
+    const newChildName = this.childForm.value.name.trim().toLowerCase();
+  
     try {
       if (this.userId) {
+        // Perform query to check if a child with the same name exists
+        const querySnapshot = await this.firestore
+          .collection('users')
+          .doc(this.userId)
+          .collection('children', ref => ref.where('name', '==', newChildName))
+          .get()
+          .toPromise();
+  
+        // Check if querySnapshot is not undefined and contains documents
+        if (querySnapshot && !querySnapshot.empty) {
+          this.message = `A child with the name "${this.childForm.value.name}" already exists.`;
+          return;
+        }
+  
+        const childData = {
+          ...this.childForm.value,
+          name: newChildName,
+          icon: this.childIcon || null
+        };
+  
+        // Add the child data to Firestore
         await this.firestore
           .collection('users')
           .doc(this.userId)
           .collection('children')
           .add(childData);
-
+  
         this.message = 'Child added successfully!';
         this.childForm.reset();
         this.childIcon = null; // Reset the icon
