@@ -27,6 +27,7 @@ export class RegisterComponent implements AfterViewInit {
       email: ['', [
         Validators.required,
         Validators.email,
+        this.gmailDomainValidator, // Gmail domain validator added here
         Validators.pattern(/^\w+([-+.'']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)
       ]],
       password: ['', [
@@ -52,6 +53,16 @@ export class RegisterComponent implements AfterViewInit {
       console.error('Error initializing reCAPTCHA:', error);
     }
   }
+
+    // Custom validator for Gmail domain
+    gmailDomainValidator(control: AbstractControl): ValidationErrors | null {
+      const email = control.value || '';
+      const domain = email.split('@')[1];
+      if (email && domain !== 'gmail.com') {
+        return { invalidDomain: true };
+      }
+      return null;
+    }
 
   // Custom validator for strong password
   passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
