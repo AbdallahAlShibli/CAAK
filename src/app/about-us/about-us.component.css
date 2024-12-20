@@ -1,7 +1,8 @@
 .about-us-container {
   text-align: center;
   padding: 2rem;
-  background-color: #f7f7f9; /* Match light background */
+  background-color: #f7f7f9;
+  /* Match light background */
   margin-bottom: 4%;
 }
 
@@ -16,7 +17,8 @@ h1 {
   gap: 2rem;
 
   .card {
-    background-color: #e9ecef; /* Light purple/gray card color */
+    background-color: #e9ecef;
+    /* Light purple/gray card color */
     border-radius: 8px;
     padding: 1rem 1.5rem;
     max-width: 300px;
