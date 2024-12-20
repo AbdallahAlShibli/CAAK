@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 interface VideoItem {
   type: 'video';
@@ -37,7 +39,7 @@ interface Level {
   templateUrl: './level.component.html',
   styleUrls: ['./level.component.css'],
 })
-export class LevelComponent {
+export class LevelComponent implements OnInit {
   levels: Level[] = [
     {
       title: 'Level 1: Protecting Your Personal Information',
@@ -81,15 +83,79 @@ export class LevelComponent {
         },
       ],
     },
-    // Additional levels can be added here...
   ];
 
   currentLevelIndex = 0;
   currentItemIndex = 0;
   isFlipped = false;
   selectedAnswers: { [key: number]: string } = {};
+  children: any[] = [];
+  selectedChildName: string | null = null;
+  selectedChildId: string | null = null;
+  userId: string | null = null;
+  message: string = ''; // Message to show to the user
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private afAuth: AngularFireAuth,
+    private firestore: AngularFirestore
+  ) { }
+
+  ngOnInit(): void {
+    this.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.userId = user.uid;
+        this.loadChildren();
+      }
+    });
+
+  }
+
+  loadChildren(): void {
+    if (this.userId) {
+      this.firestore
+        .collection('users')
+        .doc(this.userId)
+        .collection('children')
+        .valueChanges({ idField: 'id' })
+        .subscribe((children) => {
+          this.children = children;
+        });
+    }
+  }
+
+  onChildSelected(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    const selectedChildId = target.value;
+
+    const selectedChild = this.children.find((child) => child.id === selectedChildId);
+    if (selectedChild) {
+      this.selectedChildName = selectedChild.name;
+      this.selectedChildId = selectedChildId; // Update the selected child ID
+      this.message = ''; // Clear any previous messages
+    }
+  }
+
+  saveProgress(): void {
+    if (!this.selectedChildId) {
+      this.message = '*Please select a child to save progress.';
+      return;
+    }
+
+    if (this.userId) {
+      this.firestore
+        .collection('users')
+        .doc(this.userId)
+        .collection('children')
+        .doc(this.selectedChildId)
+        .update({
+          progress: this.currentLevelIndex + 1, // Save the current level as progress
+        })
+        .catch((error) => {
+          console.error('Error saving progress:', error);
+        });
+    }
+  }
 
   get currentItem(): LevelItem {
     return this.levels[this.currentLevelIndex].items[this.currentItemIndex];
@@ -104,17 +170,30 @@ export class LevelComponent {
   }
 
   nextItem(): void {
+    if (!this.selectedChildId) {
+      this.message = '*Please select a child to proceed.';
+      return;
+    }
+
     if (this.currentItemIndex < this.levels[this.currentLevelIndex].items.length - 1) {
       this.currentItemIndex++;
       this.isFlipped = false;
+    } else if (this.isLastItem) {
+      this.saveProgress();
     }
   }
 
   nextLevel(): void {
+    if (!this.selectedChildId) {
+      this.message = '*Please select a child to proceed.';
+      return;
+    }
+
     if (this.currentLevelIndex < this.levels.length - 1) {
       this.currentLevelIndex++;
       this.currentItemIndex = 0;
       this.isFlipped = false;
+      this.saveProgress();
     }
   }
 
@@ -126,26 +205,19 @@ export class LevelComponent {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  onAnswerSelected(questionIndex: number, selectedOption: string): void {
-    this.selectedAnswers[questionIndex] = selectedOption;
-  }
-
-  checkAnswers(): boolean {
+  submitFlashCardAnswers(): void {
     if (this.currentItem.type === 'flashCard') {
       const questions = this.currentItem.content.questions;
-      return questions.every(
+      const allCorrect = questions.every(
         (q, index) => this.selectedAnswers[index] === q.correctAnswer
       );
-    }
-    return false;
-  }
 
-  submitFlashCardAnswers(): void {
-    if (this.checkAnswers()) {
-      alert('All answers are correct!');
-      this.nextItem();
-    } else {
-      alert('Some answers are incorrect. Please try again.');
+      if (allCorrect) {
+        alert('Great job! All answers are correct.');
+        this.nextItem();
+      } else {
+        alert('Some answers are incorrect. Please review and try again.');
+      }
     }
   }
 }

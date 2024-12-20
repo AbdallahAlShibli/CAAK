@@ -1,188 +1,260 @@
 .level-container {
-    max-width: 800px;
-    margin: 20px auto 30px;
-    text-align: center;
-    font-family: Arial, sans-serif;
-  }
-  
-  h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .video-card {
-    width: 100%;
-    height: 300px;
-    border: none;
-    border-radius: 10px;
-    margin-bottom: 20px;
-  }
-  
-  /* Card Styling */
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+}
+
+h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.dropdown-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: #fff;
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-container label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+  margin-right: 10px;
+}
+
+.dropdown-container select {
+  font-size: 16px;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.dropdown-container select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
+}
+
+
+.error-message {
+  color: red;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.video-card {
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
 .card {
-    width: 300px;
-    height: 400px;
-    margin: 0 auto;
-    perspective: 1000px;
-    cursor: pointer;
-  }
-  
-  .card-inner {
-    width: 100%;
-    height: 100%;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-  }
-  
-  .card.flipped .card-inner {
-    transform: rotateY(180deg);
-  }
-  
-  .card-front, .card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Align content to the top */
-    align-items: flex-start; /* Align text to the left */
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    overflow-y: auto; /* Add scroll for overflow */
-  }
-  
-  .card-front {
-    background-color: #fff;
-    color: #333;
-  }
-  
-  .card-back {
-    background-color: #007bff;
-    color: white;
-    transform: rotateY(180deg);
-    text-align: left; /* Align text to the left */
-  }
-  
-  .card-back h4 {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-align: left; /* Align title to the left */
-  }
-  
-  .card-back ul {
-    font-size: 14px;
-    line-height: 1.6; /* Better readability */
-    margin: 0;
-    padding-left: 20px; /* Add indentation for the list */
-    list-style: none; /* Remove default bullet points */
-  }
-  
-  .card-back ul li::before {
-    content: "- "; /* Add dash for list items */
-    font-weight: bold; /* Highlight the dash */
-  }
-  
-  .card-back ul li {
-    margin-bottom: 10px; /* Add spacing between items */
-    word-wrap: break-word; /* Prevent overflow of long words */
-  }
-  
-  .card-back p {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #f0f0f0;
-  }
-  
-  /* Additional Styling for Headings and Buttons */
-  h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: #444;
-  }
-  
-  .next-button {
-    background: #007bff;
-    color: white;
-    font-size: 16px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .next-button:hover {
-    background: #0056b3;
-  }
-  
-  h3, p, ul {
-    margin: 10px 0;
-  }
-  
-  .button-container {
-    margin-top: 20px;
-  }
-  
+  width: 350px;
+  height: 450px;
+  margin: 0 auto;
+  perspective: 1000px;
+  cursor: pointer;
+}
 
+.card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s ease-in-out;
+  transform-style: preserve-3d;
+}
 
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
 
-  .flash-card-container {
-    margin: 20px 0;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .flash-card-container h3 {
-    font-size: 20px;
-    color: #007bff;
-    margin-bottom: 15px;
-  }
-  
-  .flash-card-container p {
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 15px;
-  }
-  
-  .flash-card-container input {
-    margin-right: 10px;
-  }
-  
-  .flash-card-container button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .flash-card-container button:hover {
-    background-color: #218838;
-  }
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
 
-  
-  .next-button {
-    background: #007bff;
-    color: white;
-    font-size: 16px;
-    margin-top: 50px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .next-button:hover {
-    background: #0056b3;
-  }
+.card-front {
+  background-color: #fff;
+  color: #333;
+}
+
+.card-back {
+  background-color: #007bff;
+  color: #fff;
+  transform: rotateY(180deg);
+}
+
+.card-back h4 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-back ul {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.card-back ul li::before {
+  content: "- ";
+  font-weight: bold;
+}
+
+.card-back ul li {
+  margin-bottom: 10px;
+}
+
+.flash-card-container {
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 600px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #ffffff, #e6e6e6);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1), -4px -4px 10px rgba(255, 255, 255, 0.5);
+  font-family: 'Arial', sans-serif;
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.flash-card-container:hover {
+  transform: scale(1.02);
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.2), -6px -6px 12px rgba(255, 255, 255, 0.5);
+}
+
+.flash-card-container h3 {
+  font-size: 24px;
+  color: #007bff;
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.flash-card-container p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.flash-card-container .question {
+  margin: 15px 0;
+}
+
+.flash-card-container .question p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.flash-card-container input[type="radio"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+  accent-color: #007bff;
+}
+
+.flash-card-container label {
+  font-size: 16px;
+  color: #333;
+}
+
+.flash-card-container button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #28a745;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.flash-card-container button:hover {
+  background-color: #218838;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.flash-card-container button:active {
+  background-color: #1e7e34;
+}
+
+.flash-card-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.flash-card-container ul li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+  padding-left: 20px;
+  position: relative;
+}
+
+.flash-card-container ul li::before {
+  content: '–';
+  color: #007bff;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+.next-button {
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 30px;
+}
+
+.next-button:hover {
+  background-color: #0056b3;
+}
+
+p, ul, h3, h4 {
+  text-align: left;
+}
+
+.button-container {
+  margin-top: 20px;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
