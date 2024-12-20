@@ -6,7 +6,7 @@ import firebase from 'firebase/compat/app';
 
 @Component({
   selector: 'app-login',
-    standalone: false,
+  standalone: false,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -22,25 +22,39 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email, Validators.pattern(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)]],
+      email: ['', [
+        Validators.required,
+        Validators.email,
+        this.gmailDomainValidator // Custom Gmail domain validator
+      ]],
       password: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator]],
       phoneNumber: ['', [Validators.required, Validators.pattern(/^\+968[0-9]{8}$/)]]
     });
   }
 
-    // Custom validator for password strength
-    passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
-      const value = control.value || '';
-      const hasUpperCase = /[A-Z]/.test(value);
-      const hasLowerCase = /[a-z]/.test(value);
-      const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
-      const hasNumber = /[0-9]/.test(value);
-  
-      const isValid = hasUpperCase && hasLowerCase && hasSpecialChar && hasNumber;
-      return !isValid ? { weakPassword: true } : null;
+  // Custom validator for Gmail domain
+  gmailDomainValidator(control: AbstractControl): ValidationErrors | null {
+    const email = control.value || '';
+    const domain = email.split('@')[1];
+    if (email && domain !== 'gmail.com') {
+      return { invalidDomain: true };
     }
+    return null;
+  }
 
-      // Check password strength when user types
+  // Custom validator for password strength
+  passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value || '';
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+
+    const isValid = hasUpperCase && hasLowerCase && hasSpecialChar && hasNumber;
+    return !isValid ? { weakPassword: true } : null;
+  }
+
+  // Check password strength when user types
   onPasswordInput() {
     const passwordControl = this.loginForm.get('password');
     if (passwordControl?.hasError('weakPassword')) {
@@ -57,34 +71,33 @@ export class LoginComponent {
     // this.loginForm.reset(); // Clear the form when switching login methods
   }
 
+  // Login method
+  async login() {
+    const { email, password, phoneNumber } = this.loginForm.value;
 
-    // Login method
-    async login() {
-      const { email, password, phoneNumber } = this.loginForm.value;
-  
-      try {
-        if (this.usePhone) {
-          if (this.loginForm.get('phoneNumber')?.invalid) {
-            this.message = 'Invalid phone number format. Please use +968XXXXXXXX.';
-            return;
-          }
-          const appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
-          const confirmationResult = await this.afAuth.signInWithPhoneNumber(phoneNumber, appVerifier);
-          const verificationCode = window.prompt('Enter verification code');
-          await confirmationResult.confirm(verificationCode!);
-        } else {
-          if (this.loginForm.get('email')?.invalid || this.loginForm.get('password')?.invalid) {
-            this.message = 'Please provide valid email and password.';
-            return;
-          }
-          await this.afAuth.signInWithEmailAndPassword(email, password);
+    try {
+      if (this.usePhone) {
+        if (this.loginForm.get('phoneNumber')?.invalid) {
+          this.message = 'Invalid phone number format. Please use +968XXXXXXXX.';
+          return;
         }
-        this.message = 'Login successful!';
-        this.router.navigate(['/parents-dashboard']);
-      } catch (error: any) {
-        this.message = error.message;
+        const appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+        const confirmationResult = await this.afAuth.signInWithPhoneNumber(phoneNumber, appVerifier);
+        const verificationCode = window.prompt('Enter verification code');
+        await confirmationResult.confirm(verificationCode!);
+      } else {
+        if (this.loginForm.get('email')?.invalid || this.loginForm.get('password')?.invalid) {
+          this.message = 'Please provide valid email and password.';
+          return;
+        }
+        await this.afAuth.signInWithEmailAndPassword(email, password);
       }
+      this.message = 'Login successful!';
+      this.router.navigate(['/parents-dashboard']);
+    } catch (error: any) {
+      this.message = error.message;
     }
+  }
 
   // Forgot password handler
   forgotPassword() {
