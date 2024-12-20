@@ -258,3 +258,18 @@ button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+.youtube-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 0%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+#youtube-background {
+  width: 0%;
+  height: 0%;
+}

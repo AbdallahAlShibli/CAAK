@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -359,10 +359,12 @@ export class LevelComponent implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     private afAuth: AngularFireAuth,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
+    this.loadYouTubeAPI();
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userId = user.uid;
@@ -501,4 +503,28 @@ export class LevelComponent implements OnInit {
       }
     }
   }
+
+
+  private loadYouTubeAPI(): void {
+    const script = this.renderer.createElement('script');
+    script.src = 'https://www.youtube.com/iframe_api';
+    script.async = true;
+    this.renderer.appendChild(document.body, script);
+
+    (window as any).onYouTubeIframeAPIReady = () => {
+      new (window as any).YT.Player('youtube-background', {
+        videoId: 'RBYgqYLmQWM', // Replace with your YouTube video ID
+        playerVars: {
+          autoplay: 1,
+          loop: 1,
+          playlist: 'RBYgqYLmQWM', // Loop the same video
+          controls: 0,
+          modestbranding: 1,
+          rel: 0,
+          showinfo: 0
+        }
+      });
+    };
+  }
+
 }
