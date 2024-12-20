@@ -6,14 +6,14 @@
   </div>
   <!-- Message -->
   <p *ngIf="message" class="error-message">{{ message }}</p>
-<!-- Dropdown for Selecting a Child -->
-<div class="dropdown-container">
-  <label for="child-select">Select a Child:</label>
-  <select id="child-select" [(ngModel)]="selectedChildId" (change)="onChildSelected($event)">
-    <option value="" disabled selected>Select...</option>
-    <option *ngFor="let child of children" [value]="child.id">{{ child.name }}</option>
-  </select>
-</div>
+  <!-- Dropdown for Selecting a Child -->
+  <div class="dropdown-container">
+    <label for="child-select">Select a Child:</label>
+    <select id="child-select" [(ngModel)]="selectedChildId" (change)="onChildSelected($event)">
+      <option value="" disabled selected>Select...</option>
+      <option *ngFor="let child of children" [value]="child.id">{{ child.name }}</option>
+    </select>
+  </div>
 
   <h2>{{ levels[currentLevelIndex].title }}</h2>
 
@@ -57,6 +57,17 @@
   <div class="button-container">
     <button *ngIf="!isLastItem" class="next-button" (click)="nextItem()">Next Item</button>
     <button *ngIf="isLastItem && !isLastLevel" class="next-button" (click)="nextLevel()">Next Level</button>
-    <p *ngIf="isLastItem && isLastLevel">Congratulations! You have completed all levels.</p>
+    <!-- <p *ngIf="isLastItem && isLastLevel">Congratulations! You have completed all levels.</p> -->
   </div>
+
+   <!-- Congratulatory Message -->
+  <p *ngIf="showCongratulatoryMessage" class="congratulatory-message">
+    Congratulations! You've completed this level.
+  </p>
+
+  <!-- Navigation Buttons -->
+  <div class="button-container">
+    <button *ngIf="showNextLevelButton" class="next-button" (click)="nextLevel()">Next Level</button>
+  </div>
+
 </div>
