@@ -364,7 +364,7 @@ export class LevelComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadYouTubeAPI();
+    // this.loadYouTubeAPI();
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userId = user.uid;
@@ -460,6 +460,13 @@ export class LevelComponent implements OnInit {
     // else if (this.isLastItem) {
     //   this.saveProgress();
     // }
+  }
+
+  previousItem(): void {
+    if (this.currentItemIndex > 0) {
+      this.currentItemIndex--; // Go back to the previous item
+      this.isFlipped = false; // Reset the flip state for flip cards
+    }
   }
 
   nextLevel(): void {

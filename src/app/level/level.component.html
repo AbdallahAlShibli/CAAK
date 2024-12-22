@@ -57,6 +57,7 @@
 
   <!-- Navigation Buttons -->
   <div class="button-container">
+    <button *ngIf="currentItemIndex > 0" class="prev-button" (click)="previousItem()">Back to Previous Item</button>
     <button *ngIf="!isLastItem" class="next-button" (click)="nextItem()">Next Item</button>
     <button *ngIf="isLastItem && !isLastLevel" class="next-button" (click)="nextLevel()">Next Level</button>
     <!-- <p *ngIf="isLastItem && isLastLevel">Congratulations! You have completed all levels.</p> -->

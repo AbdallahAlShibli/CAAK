@@ -230,6 +230,23 @@ h2 {
   position: absolute;
   left: 0;
 }
+.prev-button {
+  background-color: #6c757d; /* Gray color for differentiation */
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 30px;
+  margin-right: 10px; /* Space between buttons */
+}
+
+.prev-button:hover {
+  background-color: #5a6268; /* Darker gray on hover */
+}
+
 .next-button {
   background-color: #007bff;
   color: white;
